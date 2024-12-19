@@ -1,0 +1,23 @@
+
+{% extends  '../base/base.html'%}
+
+{% block content %}
+<div class="row">
+    {% comment %} let sidebar {% endcomment %}
+    {% include './leftbar.html' %}
+
+
+    {% comment %} right sidebar {% endcomment %}
+    {% load crispy_forms_tags%}
+    <div class="col-md-9">
+        <h5>Edit a Post</h5>
+        <form action="{% url 'posts_edit' post.id%}" method="POST" style= "width: 350px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form | crispy}}
+            <button type=" submit" class="btn btn-primary">Edit</button>
+        </form>
+
+    </div>
+</div>
+{% endblock%}
+

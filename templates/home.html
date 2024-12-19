@@ -1,0 +1,184 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROAMNEPAL</title>
+    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="{% static 'css/bolg.css'%}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  </head>
+<body>
+    <div class="container">
+      <header class="blog-header py-3">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+          <div class="col-4 pt-1">
+            <a class="blog-header-logo text-dark" href="/" style="
+
+            font-size: 2.5rem; 
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #2C3E50;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            text-decoration: none;">
+            <span style="color: green;">ROAM</span><span style="color: red">NEPAL</span>
+          </a>
+
+          </div>
+          <div class="col-4">
+            <form action="{% url 'search' %}" method="GET">
+              <div class="input-group">
+                <input class="form-control" name="keyword" type="text" placeholder="Search blogs....." aria-label="Search blogs....." aria-describedby="button-search" />
+                <button type="submit" class="btn btn-warning" id="button-search" type="button">Go</button>
+            </div>
+            </form>
+          </div>
+          <div class="col-4 d-flex justify-content-end align-items-center">
+            {%  if not user.is_authenticated %}
+            <a class="btn btn-sm btn-success" href="{% url 'login' %}">Login</a> &nbsp;
+            <a class="btn btn-sm btn-danger" href="{% url 'register' %}">Register</a>
+            {% else %}
+            <span class="btn btn-info">Hello, {{ user }}</span>&nbsp; &nbsp;
+            <span><a href="{% url 'dashboard' %}" class="btn btn-success text-white fw-bold"  style="color: red;">Dashboard</a></span> &nbsp;
+            <span>
+              <a href="{% url 'logout' %}" class="btn btn-danger text-white fw-bold" 
+                 style="color: red;" onclick="return confirmLogout(event)">
+                 Logout
+              </a>
+          </span>
+          
+          <script>
+              function confirmLogout(event) {
+                  // Prevent the default link behavior (redirect to logout immediately)
+                  event.preventDefault();
+                  
+                  // Show confirmation dialog
+                  const confirmation = confirm("Are you sure you want to log out?");
+                  
+                  // If the user clicks "Yes", redirect to the logout URL
+                  if (confirmation) {
+                      window.location.href = event.target.href;  // Proceed with the logout
+                  }
+                  // If the user clicks "No", do nothing (stay on the current page)
+              }
+          </script>
+          
+            {% endif %}
+          </div>
+        </div>
+      </header>
+
+      <div class="nav-scroller py-1 mb-2">
+        <nav class="nav d-flex justify-content-between">
+          {% for cat in categories %}
+          <a class="p-2 text-muted" href="{% url 'posts_by_category' cat.id %}" >
+            {{ cat.Category_name }}
+          </a>
+          
+        {% endfor %}
+        </nav>
+      </div>
+    
+
+    {% block content %}
+    {% for post in featured_post %}
+    {%if forloop.first%}
+    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark" style="background-image: url({{post.blog_image.url}});background-blend-mode: overlay;background-size:cover;">
+        <div class="col-md-8 px-0">
+          <h1 class="display-4 font-italic"><a href="{% url 'blogs' post.slug%}" >{{post.title}}</a></h1>
+          <p class="lead mb-0"><a href="{% url 'blogs' post.slug%}" class="text-white font-weight-bold">Continue reading...</a></p>
+        </div>
+    </div>
+    {%endif%}
+    {% endfor%}
+
+
+  {% comment %} featured post {% endcomment %}
+  <h3 class="text-UPPERCASE btn btn-warning" style="letter-spacing:2px;">FEATURED POST</h3>
+  <div class="row mb-2">
+    {% for post in featured_post %}
+    {% if not forloop.first%}
+    <div class="col-md-6">
+      <div class="card border-0" >
+        <div class="card-body">
+          <h3><a href="{% url 'blogs' post.slug%}">{{ post.title }}</a></h3>
+          <small class="mb-1 text-muted">{{post.created_at | timesince}} ago | {{post.author}}</small>
+          <p class="card-text">{{post.short_description | truncatewords:50}}</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor%}
+  </div>
+
+
+{% comment %} Recent Article {% endcomment %}
+<h3 class="text-UPPERCASE btn btn-warning" style="letter-spacing:2px;">RECENT ARTICLES</h3>
+  <main role="main" class="container p-0">
+    <div class="row">
+      <div class="col-md-8 blog-main">
+        {% for post in posts %}
+        <div class="card border-0" >
+          <div class="card-body">
+            <h3> <a href="{% url 'blogs' post.slug%}">{{ post.title }}</a></h3>
+            <small class="mb-1 text-muted">{{post.created_at | timesince}} ago | {{post.author}}</small>
+            <p class="card-text">{{post.short_description | truncatewords:50}}</p>
+          </div>
+        </div>
+        {% endfor%}
+      </div>
+      <!-- /.blog-main -->
+
+      <aside class="col-md-4 blog-sidebar">
+        <div class="p-3 mb-3 bg-light rounded">
+          <h4 class="text-UPPERCASE btn btn-warning">About Us</h4>
+          <p class="mb-0">ROAMNEPAL, a dedicated platform where travel enthusiasts like you can explore, share, and discover incredible travel blogs across various categories. Whether you’re looking for adventure, cultural insights, or hidden gems, ROAMNEPAL connects you with authentic experiences and inspiring stories to fuel your wanderlust.</p>
+        </div>
+
+        <div class="p-3">
+          <h4 class="text-UPPERCASE btn btn-warning">Follow Us on</h4>
+          <ol class="list-unstyled">
+            <li>
+              <a href="#" class="text-decoration-none">Facebook
+                <i class="bi bi-facebook me-2"></i> 
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-decoration-none" style="color: #E4405F;">
+                Instagram
+                <i class="bi bi-instagram me-2" style="color: #E4405F;"></i>
+            </a>
+            
+            </li>
+          </ol>
+        </div>
+        
+        
+      </aside><!-- /.blog-sidebar -->
+
+    </div><!-- /.row -->
+
+  </main><!-- /.container -->
+
+</div>
+{% endblock %}
+<footer class="blog-footer">
+</footer>
+</body>
+<script type="text/javascript">
+    (function(d, m){
+        var kommunicateSettings = 
+            {"appId":"382fd4b17cd48b0946d17fcf3bcbbe8d4","popupWidget":true,"automaticChatOpenOnNavigation":true};
+        var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+        s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+        var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+        window.kommunicate = m; m._globals = kommunicateSettings;
+    })(document, window.kommunicate || {});
+</script>
+</html>

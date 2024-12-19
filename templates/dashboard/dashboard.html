@@ -1,0 +1,38 @@
+{% extends '../base/base.html' %}
+{% block content %}
+
+<div class="row">
+    {% comment %} let sidebar {% endcomment %}
+    {% include './leftbar.html' %}
+
+
+    {% comment %} right sidebar {% endcomment %}
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col">
+                <div class="card border-default mb-3">
+                    <div class="card-header text-center text-uppercase font-weight-bold">
+                        <h3 style="color: #17a2b8; font-weight: bold;">All Categories</h3>
+                    </div>
+                    <div class="card-body text-dark">
+                        <h4 class="cart-title text-center">{{category_counts}}</h4>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col">
+                <div class="card border-default mb-3">
+                    <div class="card-header text-center text-uppercase font-weight-bold">
+                        <h3 style="color: #17a2b8; font-weight: bold;">All Posts</h3>
+                    </div>
+                    <div class="card-body text-dark">
+                        <h4 class="cart-title text-center">{{blogs_count}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock%}

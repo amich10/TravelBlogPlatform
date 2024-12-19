@@ -1,0 +1,102 @@
+{% extends './base/base.html'%}
+
+
+{% block content %}
+
+<!-- Page content-->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1">{{ single_post.title }}</h1>
+                    <!-- Post meta content-->
+                    <div class="text-muted fst-italic mb-2">{{single_post.created_at}} | {{single_post.author}}</div>
+                    <!-- Post category-->
+                    <a class="badge bg-warning text-decoration-none text-light" href="#!">{{ single_post.Category}}</a>
+                </header>
+                <!-- Preview image figure-->
+                <figure class="mb-4"><img class="img-fluid rounded" src="{{single_post.blog_image.url}}" alt="..." /></figure>
+                <!-- Post content-->
+                <section class="mb-5">
+                    <p class="fs-5 mb-4">{{single_post.short_description}}</p>
+                    <p class="fs-5 mb-4">{{single_post.blog_body}}</p>
+                    {% comment %} comments {% endcomment %}
+                    <h6>Comments ({{ comments_count }})</h6>
+                    {% if comments %}
+                    {% for comment in comments%}
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text mb-0">{{comment}}</p>
+                            <span>
+                                <small>By: {{comment.user}}</small>
+                                <small>{{comment.created_at| timesince}} ago</small>
+                            </span>
+                        </div>
+                    </div>
+                    {%endfor%}
+                    {% else %}
+                    Noone Commented Yet!!
+                    {%endif%}
+                    <div class="form-group mt-2">
+                        {% if user.is_authenticated%}
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea name="comment" class="form-control mt-2" placeholder ="Comment your thoughts !!!"></textarea>
+                                <input type="submit" class="btn btn-info mt-2" >
+                            </div>
+                        </form>
+                        {%else%}
+                        <p><span><a class="btn btn-sm btn-success" href="{% url 'login' %}">Login</a></span> to comment</p>
+                        {%endif%}
+                    </div>
+                    </section>
+            </article>
+        </div>
+        <!-- Side widgets-->
+        <div class="col-lg-4">
+            
+            <!-- Categories widget-->
+            <div class="card mb-4 p-3">
+                <h4>Categories</h4>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                {%for cat in categories%}
+                                <li><a href="{% url 'posts_by_category' cat.id %}">{{cat.Category_name}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- Side widget-->
+            <div class="card mb-4 p-3">
+                <h4>Follow Us</h4>
+                <ol class="list-unstyled">
+                    <li>
+                    <a href="#" class="text-decoration-none">Facebook
+                        <i class="bi bi-facebook me-2"></i> 
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="text-decoration-none" style="color: #E4405F;">
+                        Instagram
+                        <i class="bi bi-instagram me-2" style="color: #E4405F;"></i>
+                    </a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

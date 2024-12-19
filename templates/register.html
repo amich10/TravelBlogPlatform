@@ -1,0 +1,19 @@
+{% extends './base/base.html' %}
+
+{% block content %}
+
+
+<h2 style="text-align: center;"> Register to ROAMNEPAL</h2>
+<hr/>
+
+{% load crispy_forms_tags %}
+
+<div style="width: 500px; margin: auto;">
+    <form action="" method="POST">
+         {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-info" value="Register">
+    </form>
+</div>
+
+{% endblock %}
