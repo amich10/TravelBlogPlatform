@@ -1,11 +1,19 @@
 # TravelBlogPlatform
 
-## For login 
-## Admin
-username: admin
-password: admin
+ ## To run the code follow these process.
+1. git clone https://github.com/amich10/TravelBlogPlatform.git
+2. cd TravelBlogPlatform
+3. python -m venv venv
+4. venv\Scripts\activate
+5. pip install -r requirement.txt                      Note * (its requirement.txt not requiremets.txt)
+6. python manage.py runserver
 
-## Regular user
 
-username: Alice
-password: Magarmagar@00
+### For login 
+#### Admin
+1. username: admin
+2. password: admin
+
+#### Regular user
+1. username: Alice
+2. password: Magarmagar@00
