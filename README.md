@@ -5,7 +5,7 @@
 2. cd TravelBlogPlatform
 3. python -m venv venv
 4. venv\Scripts\activate
-5. pip install -r requirement.txt &nbsp; &nbsp; &nbsp;Note * (its requirement.txt not requiremets.txt)
+5. pip install -r requirement.txt &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Note * (its requirement.txt not requiremets.txt)
 6. python manage.py runserver
 
 
